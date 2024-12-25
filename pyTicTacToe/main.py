@@ -116,7 +116,6 @@ while terminal(s) is None:
         if not s[index] == BOARD_EMPTY: 
             print('That coordinate is already taken. Please try again.')
             continue
-
         s = result(s, (1, index))
         print_board(s)
     else:
