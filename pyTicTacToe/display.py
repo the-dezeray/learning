@@ -1,12 +1,12 @@
 from collections import Counter
-
+from art import *
 BOARD_EMPTY = 0
 BOARD_PLAYER_X = 1
 BOARD_PLAYER_O = -1
 
-DISPLAY_PLAYER = 'X'
-DISPLAY_COMPUTER = 'O'
-DISPLAY_EMPTY = ' '
+DISPLAY_PLAYER = text2art("X",font = "cybermedium")
+DISPLAY_COMPUTER = text2art("O",font = "small")
+DISPLAY_EMPTY =     text2art(" ",font = "small")
 def get_turn(s):
     counter = Counter(s)
     x_places = counter[1]
@@ -145,7 +145,7 @@ class KeyboardController:
             pass        
         # print(input_string)
 
-def box(item) -> Panel:
+def boxa(item) -> Panel:
     
     style = ""
     if item.value == BOARD_PLAYER_X:
@@ -158,7 +158,9 @@ def box(item) -> Panel:
     if item.selected:
         style = "bold green"
     string = str(item.value)
-    return Panel(string, border_style=style)
+    from rich.text import Text
+    text = Text(string,justify="center")
+    return Panel(text,border_style=style,height =7,width=10,padding=(0,0))
 
 
 class square:
@@ -194,7 +196,8 @@ class Core:
 
 
     def build_table(self) -> Table:
-        table = Table.grid(expand=True)
+        from rich import box
+        table = Table.grid(padding=(0,1,1,1))
         table.add_column()
         table.add_column()
         table.add_column()
@@ -207,8 +210,10 @@ class Core:
 
         for i in range(0,len(bap),3):
             t = bap[i:i+3]
-            table.add_row(box(t[0]),box(t[1]),box(t[2]))
-        return table 
+            table.add_row(boxa(t[0]),boxa(t[1]),boxa(t[2]))
+        from rich.align import Align
+        from rich.padding import Padding
+        return Align(Padding(table,pad = (1,5,5,5)),align="center")
     def update(self):
          core.live.update(self.build_table())  
 
